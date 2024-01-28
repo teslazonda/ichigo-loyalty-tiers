@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   Rails.application.routes.draw do
   namespace :v1 do
+    resources :customers, only: [:show]
     resources :orders, only: [:create]
     end
   end

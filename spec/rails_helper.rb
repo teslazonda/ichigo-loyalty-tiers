@@ -48,7 +48,20 @@ RSpec.configure do |config|
   config.include Shoulda::Matchers::ActiveModel, type: :model
   config.include Shoulda::Matchers::ActiveRecord, type: :model
 
+# Ensure that the test database is cleaned before running the suite
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
 
+  # Configure DatabaseCleaner to clean the database for each test
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  # Reset DatabaseCleaner strategy after each example
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.

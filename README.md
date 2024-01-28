@@ -1,5 +1,13 @@
 # README
 
+## Setup
+* Ensure Ruby 3.2.2 and Rails 7 are installed
+* Clone the repo and navigate to the this projects root directory
+* Run `bundle install` to install Rails dependencies
+* Run `rails db:create && rails db:migrate` to locally setup the SQLite database
+* Start the server with `rails s`
+
+
 Requirements
 
 Imagine we already have a service which manages the customers and orders for an e-commerce site, and now we want to add a loyalty program with Bronze/Silver/Gold tiers. These tiers will be based on how much the customer has spent on our site since the start of last year.

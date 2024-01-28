@@ -1,6 +1,8 @@
 class Order < ApplicationRecord
   belongs_to :customer
 
+  after_save :recalculate_customer_attributes_after_create
+
 
   validates :customer_id, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   #validates :customer_id, presence: true, numericality: { greater_than_or_equal_to: 0 }
@@ -14,6 +16,11 @@ class Order < ApplicationRecord
   before_validation :convert_customer_id_to_string
 
   private
+
+  def recalculate_customer_attributes_after_create
+    customer.recalculate_attributes # Call a method in Customer model to recalculate attributes
+    "****** Attributes recalculated!"
+  end
 
   def convert_customer_id_to_string
     self.customerId = customer_id.to_s if customer_id.present?
