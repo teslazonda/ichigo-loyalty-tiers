@@ -1,20 +1,31 @@
-# seeds.rb
-
-# Ensure that Faker gem is included in your Gemfile and installed
-# gem 'faker'
-
 # Clear existing data
-puts "Deleting all orders..."
+puts "Deleting all orders and customers..."
 Order.destroy_all
+Customer.destroy_all
 
-# Seed orders with Faker data
+# Create a customer (Taro Suzuki)
+customer = Customer.create!(
+  current_tier: 'SILVER',
+  amount_spent_since_last_year: 500,
+  amount_needed_for_next_tier: 1000,
+  downgraded_tier: 'BRONZE',
+  amount_needed_to_avoid_downgrade: 200,
+  name: "Taro Suzuki"
+)
+
+# Seed orders with Faker data, associating each order with the customer
 5.times do
-  Order.create!(
-    customerId: Faker::Number.number(digits: 3).to_s,
-    customerName: Faker::JapaneseMedia::OnePiece.character,
-    orderId: "T#{Faker::Alphanumeric.alphanumeric(number: 3).upcase}",
+  order_id_prefix = "T"
+    order_id_suffix = Faker::Number.number(digits: 3)
+    order_id = "#{order_id_prefix}#{order_id_suffix}"
+
+  customer.orders.create!(
+    customerId: (customer.id.to_s if customer.id.present?),
+    customerName: customer.name,
+    orderId: order_id,
     totalInCents: Faker::Number.number(digits: 4),
-    date: Faker::Time.between(from: 1.year.ago, to: Time.now, format: :iso8601)
+    date: Faker::Time.between(from: 1.year.ago, to: Time.now, format: :iso8601),
+    customer: customer
   )
 end
 

@@ -10,8 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_24_113648) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_28_011903) do
+  create_table "customers", force: :cascade do |t|
+    t.string "current_tier"
+    t.integer "amount_spent_since_last_year"
+    t.integer "amount_needed_for_next_tier"
+    t.string "downgraded_tier"
+    t.integer "amount_needed_to_avoid_downgrade"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "orders", force: :cascade do |t|
+    t.integer "customer_id", null: false
     t.string "customerId"
     t.string "customerName"
     t.string "orderId"
@@ -19,6 +31,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_24_113648) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
   end
 
+  add_foreign_key "orders", "customers"
 end
