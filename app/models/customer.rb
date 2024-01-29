@@ -1,6 +1,7 @@
 class Customer < ApplicationRecord
   has_many :orders
 
+
   # validates :current_tier, presence: true
   # validates :amount_spent_since_last_year, presence: true, numericality: { greater_than_or_equal_to: 0 }
   # validates :amount_needed_for_next_tier, presence: true, numericality: { greater_than_or_equal_to: 0 }
@@ -44,7 +45,9 @@ class Customer < ApplicationRecord
   end
 
   def amount_needed_to_avoid_downgrade
-    calculate_tier_threshold(downgraded_tier) - amount_spent_since_last_year if downgraded_tier.present?
+    result = calculate_tier_threshold(downgraded_tier) - amount_spent_since_last_year if downgraded_tier.present?
+    puts "Debug: amount_needed_to_avoid_downgrade = #{result}"
+    result
   end
 
 
@@ -67,15 +70,36 @@ class Customer < ApplicationRecord
     orders.where('date >= ?', start_of_year)
   end
 
+  def make_downgraded_tier(tier)
+    case tier
+    when "GOLD"
+      return "SILVER"
+    when "SILVER"
+      return "BRONZE"
+    else
+      return "BRONZE"
+    end
+  end
+
   def recalculate_attributes
     # Logic to recalculate relevant attributes based on orders
     update(
       current_tier: calculate_tier,
       amount_spent_since_last_year: calculate_amount_spent_since_last_year,
-      downgraded_tier: downgraded_tier,
-      amount_needed_to_avoid_downgrade: [amount_needed_to_avoid_downgrade, 0].max,
-      amount_needed_for_next_tier: amount_needed_for_next_tier
+      downgraded_tier: make_downgraded_tier(calculate_tier),
+      amount_needed_for_next_tier: amount_needed_for_next_tier,
+      amount_needed_to_avoid_downgrade: [amount_needed_to_avoid_downgrade, 0].max
       # ... other attributes
     )
   end
+
+  private
+
+  def invalidate_customer_cache
+    #touch # Touch the associated customer to update its cache key
+  end
+
+  # def invalidate_customer_cache
+  #   customer&.touch # Touch the associated customer to update its cache key
+  # end
 end
