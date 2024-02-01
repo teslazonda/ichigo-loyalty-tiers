@@ -46,7 +46,7 @@ class Customer < ApplicationRecord
 
   def amount_needed_to_avoid_downgrade
     result = calculate_tier_threshold(downgraded_tier) - amount_spent_since_last_year if downgraded_tier.present?
-    puts "Debug: amount_needed_to_avoid_downgrade = #{result}"
+    #puts "Debug: amount_needed_to_avoid_downgrade = #{result}"
     result
   end
 

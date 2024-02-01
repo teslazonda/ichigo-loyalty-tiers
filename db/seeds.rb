@@ -14,7 +14,7 @@ customer = Customer.create!(
 )
 
 # Seed orders with Faker data, associating each order with the customer
-100.times do
+50.times do
   order_id_prefix = "T"
   order_id_suffix = nil
   # order_id = "#{order_id_prefix}#{order_id_suffix}"
