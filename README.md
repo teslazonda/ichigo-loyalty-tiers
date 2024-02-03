@@ -8,6 +8,17 @@
 * Start the server with `rails s`
 
 
+## Endpoints
+You can add orders to the database with the `curl` command.
+
+
+Example:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"customerId": "1", "customerName": "Taro Suzuki", "orderId": "T43343", "totalInCents": 345044, "date": "2024-01-04T05:29:59.850Z"}' http://localhost:3000/v1/orders
+```
+
+
+
 Requirements
 
 Imagine we already have a service which manages the customers and orders for an e-commerce site, and now we want to add a loyalty program with Bronze/Silver/Gold tiers. These tiers will be based on how much the customer has spent on our site since the start of last year.
