@@ -1,5 +1,8 @@
 class Order < ApplicationRecord
-  belongs_to :customer
+  belongs_to :customer, touch: true
+
+  after_save :recalculate_customer_attributes_after_create
+  after_create :invalidate_customer_cache
 
 
   validates :customer_id, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
@@ -13,7 +16,16 @@ class Order < ApplicationRecord
   validate :date_format_must_be_iso8601
   before_validation :convert_customer_id_to_string
 
+
   private
+  def invalidate_customer_cache
+    customer&.touch # Touch the associated customer to update its cache key
+  end
+
+  def recalculate_customer_attributes_after_create
+    customer.recalculate_attributes # Call a method in Customer model to recalculate attributes
+    "****** Attributes recalculated!"
+  end
 
   def convert_customer_id_to_string
     self.customerId = customer_id.to_s if customer_id.present?

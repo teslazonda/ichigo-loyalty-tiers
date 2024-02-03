@@ -32,7 +32,7 @@ it 'validates case-sensitive uniqueness of orderId' do
 
     it 'validates date format' do
       customer = create(:customer)
-      order = create(:order, date: '2022-03-04T05:29:59.850Z', customer: customer)
+      order = create(:order, date: '2022-03-04T05:29:59.850Z', customer: customer, orderId: 'T123')
       expect(order).to be_valid
     end
 

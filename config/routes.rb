@@ -4,10 +4,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  Rails.application.routes.draw do
+  #Rails.application.routes.draw do
   namespace :v1 do
+    resources :customers, only: [:show] do
+      resources :orders, only: [:index]
+    end
     resources :orders, only: [:create]
     end
-  end
-
 end

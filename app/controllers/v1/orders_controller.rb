@@ -1,7 +1,10 @@
 class V1::OrdersController < ApplicationController
 
   def index
-    # Your code here
+    customer = Customer.find(params[:customer_id])
+    start_of_year = Date.current.beginning_of_year
+    orders = customer.orders.where('date >= ?', start_of_year)
+    render json: orders
   end
 
   def show
