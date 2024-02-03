@@ -16,6 +16,7 @@ class Order < ApplicationRecord
   validate :date_format_must_be_iso8601
   before_validation :convert_customer_id_to_string
 
+
   private
   def invalidate_customer_cache
     customer&.touch # Touch the associated customer to update its cache key
