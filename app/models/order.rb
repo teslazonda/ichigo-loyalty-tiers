@@ -6,10 +6,8 @@ class Order < ApplicationRecord
 
 
   validates :customer_id, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  #validates :customer_id, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :customerName, presence: true
   validates :orderId, presence: true, uniqueness: { case_sensitive: false, message: 'must be unique and start with "T" followed by numerical characters' }, format: { with: /\AT\d+\z/, message: 'must start with "T" followed by numerical characters' }, length: { maximum: 50 }
-  # validates :orderId, presence: true, uniqueness: true, format: { with: /\AT\d+\z/, message: 'must start with "T" followed by numerical characters' }, length: { maximum: 50 }
   validates :totalInCents, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :date, presence: true
 
